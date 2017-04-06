@@ -81,6 +81,18 @@ class Vector(object):
     def is_zero(self, tol=1e-10):
         return self.magnitude() < tol
 
+    def projection(self, b):
+        try:
+            return b.norm().times_scalar(v.dot_product(b.norm()))
+        except Exception as e:
+            raise e
+
+    def perp(self, b):
+        try:
+            return self.minus(self.projection(b))
+        except Exception as e:
+            raise e
+
 
 one = Vector([8.218, -9.341])
 print one.plus(Vector([-1.129, 2.111]))
@@ -120,3 +132,16 @@ v = Vector([2.118, 4.827])
 w = Vector([0, 0])
 print v.is_parallel(w)
 print v.is_orthogonal(w)
+
+v = Vector([3.039, 1.879])
+b = Vector([0.825, 2.036])
+print v.projection(b)
+
+v = Vector([-9.88, -3.264, -8.159])
+b = Vector([-2.155, -9.353, -9.473])
+print v.perp(b)
+
+v = Vector([3.009, -6.172, 3.692, -2.51])
+b = Vector([6.404, -9.144, 2.759, 8.718])
+print v.projection(b)
+print v.perp(b)
