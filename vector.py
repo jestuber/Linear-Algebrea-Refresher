@@ -44,11 +44,17 @@ class Vector(object):
     def dot_product(self, v):
         return sum([x * y for x, y in zip(self.coordinates, v.coordinates)])
 
-    def angle(self, v):
+    def angle(self, v, in_degrees=False):
         try:
             norm_self = self.norm()
             norm_v = v.norm()
-            return math.acos(norm_self.dot_product(norm_v))
+            angle = math.acos(norm_self.dot_product(norm_v))
+
+            if in_degrees:
+                return angle * 180. / math.pi
+            else:
+                return angle
+
         except ZeroDivisionError:
             raise Exception("Cannot find Angle with Zero Vector")
 
@@ -70,4 +76,4 @@ print Vector([5.581, -2.136]).norm()
 print Vector([7.887, 4.138]).dot_product(Vector([-8.802, 6.776]))
 print Vector([-5.955, -4.904, -1.874]).dot_product(Vector([-4.496, -8.755, 7.103]))
 print Vector([3.183, -7.627]).angle(Vector([-2.668, 5.319]))
-print Vector([7.35, 0.221, 5.188]).angle(Vector([2.751, 8.259, 3.985]))
+print Vector([7.35, 0.221, 5.188]).angle(Vector([2.751, 8.259, 3.985]),True)
