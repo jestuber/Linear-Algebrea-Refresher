@@ -1,11 +1,16 @@
-import math
+from math import pi, acos, sqrt
+from decimal import Decimal, getcontext
+
+getcontext().prec = 30
+
+
 class Vector(object):
     def __init__(self, coordinates):
         try:
             if not coordinates:
                 raise ValueError
-            self.coordinates = tuple(coordinates)
-            self.dimension = len(coordinates)
+            self.coordinates = tuple([Decimal(x) for x in coordinates])
+            self.dimension = len(self.coordinates)
 
         except ValueError:
             raise ValueError('The coordinates must be nonempty')
@@ -28,18 +33,18 @@ class Vector(object):
         return Vector(new_coord)
 
     def times_scalar(self, c):
-        new_coord = [c * x for x in self.coordinates]
+        new_coord = [Decimal(c) * x for x in self.coordinates]
         return Vector(new_coord)
 
     def magnitude(self):
-        return sum([x**2 for x in self.coordinates])**0.5
+        return sqrt(sum([x**2 for x in self.coordinates]))
 
     def norm(self):
         try:
             magnitude = self.magnitude()
-            return self.times_scalar(1. / magnitude)
-        except ZeroDivisionError:
-            raise Exception("Zero Vector has no norm")
+            return self.times_scalar(Decimal('1.0') / Decimal(magnitude))
+        except Exception as e:
+            raise e
 
     def dot_product(self, v):
         return sum([x * y for x, y in zip(self.coordinates, v.coordinates)])
@@ -48,15 +53,33 @@ class Vector(object):
         try:
             norm_self = self.norm()
             norm_v = v.norm()
-            angle = math.acos(norm_self.dot_product(norm_v))
+            norms_dotted = norm_self.dot_product(norm_v)
+            angle = acos(round(norms_dotted, 10))
 
             if in_degrees:
-                return angle * 180. / math.pi
+                return angle * 180. / pi
             else:
                 return angle
 
         except ZeroDivisionError:
             raise Exception("Cannot find Angle with Zero Vector")
+
+    def is_parallel(self, v):
+        if self.is_zero() or v.is_zero():
+            return True
+        elif (self.angle(v) == 0) or (self.angle(v) == pi):
+            return True
+        else:
+            return False
+
+    def is_orthogonal(self, v, tol=1e-10):
+        if abs(self.dot_product(v)) < tol:
+            return True
+        else:
+            return False
+
+    def is_zero(self, tol=1e-10):
+        return self.magnitude() < tol
 
 
 one = Vector([8.218, -9.341])
@@ -77,3 +100,23 @@ print Vector([7.887, 4.138]).dot_product(Vector([-8.802, 6.776]))
 print Vector([-5.955, -4.904, -1.874]).dot_product(Vector([-4.496, -8.755, 7.103]))
 print Vector([3.183, -7.627]).angle(Vector([-2.668, 5.319]))
 print Vector([7.35, 0.221, 5.188]).angle(Vector([2.751, 8.259, 3.985]),True)
+
+v = Vector([-7.579, -7.88])
+w = Vector([22.737, 23.64])
+print v.is_parallel(w)
+print v.is_orthogonal(w)
+
+v = Vector([-2.029, 9.97, 4.172])
+w = Vector([-9.231, -6.639, -7.245])
+print v.is_parallel(w)
+print v.is_orthogonal(w)
+
+v = Vector([-2.328, -7.284, -1.214])
+w = Vector([-1.821, 1.072, -2.94])
+print v.is_parallel(w)
+print v.is_orthogonal(w)
+
+v = Vector([2.118, 4.827])
+w = Vector([0, 0])
+print v.is_parallel(w)
+print v.is_orthogonal(w)
