@@ -37,7 +37,7 @@ class Vector(object):
         return Vector(new_coord)
 
     def magnitude(self):
-        return sqrt(sum([x**2 for x in self.coordinates]))
+        return Decimal(sqrt(sum([x**2 for x in self.coordinates])))
 
     def norm(self):
         try:
@@ -93,6 +93,19 @@ class Vector(object):
         except Exception as e:
             raise e
 
+    def cross_product(self, w):
+        v = self.coordinates
+        w = w.coordinates
+        return Vector([v[1] * w[2] - v[2] * w[1],
+                       v[2] * w[0] - v[0] * w[2],
+                       v[0] * w[1] - v[1] * w[0]])
+
+    def area_parallelogram(self, w):
+        return self.cross_product(w).magnitude()
+
+    def area_triangle(self, w):
+        return self.area_parallelogram(w) * Decimal('0.5')
+
 
 one = Vector([8.218, -9.341])
 print one.plus(Vector([-1.129, 2.111]))
@@ -145,3 +158,15 @@ v = Vector([3.009, -6.172, 3.692, -2.51])
 b = Vector([6.404, -9.144, 2.759, 8.718])
 print v.projection(b)
 print v.perp(b)
+
+v = Vector([8.462, 7.893, -8.187])
+w = Vector([6.984, -5.975, 4.778])
+print v.cross_product(w)
+
+v = Vector([-8.987, -9.838, 5.031])
+w = Vector([-4.268, -1.861, -8.866])
+print v.area_parallelogram(w)
+
+v = Vector([1.5, 9.547, 3.691])
+w = Vector([-6.007, 0.124, 5.772])
+print v.area_triangle(w)
