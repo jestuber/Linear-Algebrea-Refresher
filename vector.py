@@ -24,6 +24,12 @@ class Vector(object):
     def __eq__(self, v):
         return self.coordinates == v.coordinates
 
+    def __iter__(self):
+            return iter(self.coordinates)
+
+    def __getitem__(self, index):
+            return self.coordinates[index]
+
     def plus(self, v):
         new_coord = [x + y for x, y in zip(self.coordinates, v.coordinates)]
         return Vector(new_coord)
@@ -107,66 +113,66 @@ class Vector(object):
         return self.area_parallelogram(w) * Decimal('0.5')
 
 
-one = Vector([8.218, -9.341])
-print one.plus(Vector([-1.129, 2.111]))
+# one = Vector([8.218, -9.341])
+# print one.plus(Vector([-1.129, 2.111]))
 
-two = Vector([7.119, 8.215])
-print two.minus(Vector([-8.223, 0.878]))
+# two = Vector([7.119, 8.215])
+# print two.minus(Vector([-8.223, 0.878]))
 
-three = Vector([1.671, -1.012, -0.318])
-print three.times_scalar(7.41)
+# three = Vector([1.671, -1.012, -0.318])
+# print three.times_scalar(7.41)
 
-print Vector([-0.221, 7.437]).magnitude()
-print Vector([8.813, -1.331, -6.247]).magnitude()
-print Vector([1.996, 3.108, -4.554]).norm()
-print Vector([5.581, -2.136]).norm()
+# print Vector([-0.221, 7.437]).magnitude()
+# print Vector([8.813, -1.331, -6.247]).magnitude()
+# print Vector([1.996, 3.108, -4.554]).norm()
+# print Vector([5.581, -2.136]).norm()
 
-print Vector([7.887, 4.138]).dot_product(Vector([-8.802, 6.776]))
-print Vector([-5.955, -4.904, -1.874]).dot_product(Vector([-4.496, -8.755, 7.103]))
-print Vector([3.183, -7.627]).angle(Vector([-2.668, 5.319]))
-print Vector([7.35, 0.221, 5.188]).angle(Vector([2.751, 8.259, 3.985]),True)
+# print Vector([7.887, 4.138]).dot_product(Vector([-8.802, 6.776]))
+# print Vector([-5.955, -4.904, -1.874]).dot_product(Vector([-4.496, -8.755, 7.103]))
+# print Vector([3.183, -7.627]).angle(Vector([-2.668, 5.319]))
+# print Vector([7.35, 0.221, 5.188]).angle(Vector([2.751, 8.259, 3.985]),True)
 
-v = Vector([-7.579, -7.88])
-w = Vector([22.737, 23.64])
-print v.is_parallel(w)
-print v.is_orthogonal(w)
+# v = Vector([-7.579, -7.88])
+# w = Vector([22.737, 23.64])
+# print v.is_parallel(w)
+# print v.is_orthogonal(w)
 
-v = Vector([-2.029, 9.97, 4.172])
-w = Vector([-9.231, -6.639, -7.245])
-print v.is_parallel(w)
-print v.is_orthogonal(w)
+# v = Vector([-2.029, 9.97, 4.172])
+# w = Vector([-9.231, -6.639, -7.245])
+# print v.is_parallel(w)
+# print v.is_orthogonal(w)
 
-v = Vector([-2.328, -7.284, -1.214])
-w = Vector([-1.821, 1.072, -2.94])
-print v.is_parallel(w)
-print v.is_orthogonal(w)
+# v = Vector([-2.328, -7.284, -1.214])
+# w = Vector([-1.821, 1.072, -2.94])
+# print v.is_parallel(w)
+# print v.is_orthogonal(w)
 
-v = Vector([2.118, 4.827])
-w = Vector([0, 0])
-print v.is_parallel(w)
-print v.is_orthogonal(w)
+# v = Vector([2.118, 4.827])
+# w = Vector([0, 0])
+# print v.is_parallel(w)
+# print v.is_orthogonal(w)
 
-v = Vector([3.039, 1.879])
-b = Vector([0.825, 2.036])
-print v.projection(b)
+# v = Vector([3.039, 1.879])
+# b = Vector([0.825, 2.036])
+# print v.projection(b)
 
-v = Vector([-9.88, -3.264, -8.159])
-b = Vector([-2.155, -9.353, -9.473])
-print v.perp(b)
+# v = Vector([-9.88, -3.264, -8.159])
+# b = Vector([-2.155, -9.353, -9.473])
+# print v.perp(b)
 
-v = Vector([3.009, -6.172, 3.692, -2.51])
-b = Vector([6.404, -9.144, 2.759, 8.718])
-print v.projection(b)
-print v.perp(b)
+# v = Vector([3.009, -6.172, 3.692, -2.51])
+# b = Vector([6.404, -9.144, 2.759, 8.718])
+# print v.projection(b)
+# print v.perp(b)
 
-v = Vector([8.462, 7.893, -8.187])
-w = Vector([6.984, -5.975, 4.778])
-print v.cross_product(w)
+# v = Vector([8.462, 7.893, -8.187])
+# w = Vector([6.984, -5.975, 4.778])
+# print v.cross_product(w)
 
-v = Vector([-8.987, -9.838, 5.031])
-w = Vector([-4.268, -1.861, -8.866])
-print v.area_parallelogram(w)
+# v = Vector([-8.987, -9.838, 5.031])
+# w = Vector([-4.268, -1.861, -8.866])
+# print v.area_parallelogram(w)
 
-v = Vector([1.5, 9.547, 3.691])
-w = Vector([-6.007, 0.124, 5.772])
-print v.area_triangle(w)
+# v = Vector([1.5, 9.547, 3.691])
+# w = Vector([-6.007, 0.124, 5.772])
+# print v.area_triangle(w)

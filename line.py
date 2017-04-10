@@ -86,6 +86,32 @@ class Line(object):
 
         return output
 
+    def is_parallel(self, l):
+        return self.normal_vector.is_parallel(l.normal_vector)
+
+    def __eq__(self, l):
+        if not self.is_parallel(l):
+            return False
+        else:
+            p1 = self.basepoint
+            p2 = l.basepoint
+            connecting_vector = p2.minus(p1)
+            return connecting_vector.is_orthogonal(self.normal_vector)
+
+    def intersection(self, l):
+        if self == l:
+            return self
+        elif self.is_parallel(l):
+            return None
+        else:
+            A, B = self.normal_vector.coordinates
+            C, D = l.normal_vector.coordinates
+            k1 = self.constant_term
+            k2 = l.constant_term
+            x = (D * k1 - B * k2) / (A * D - B * C)
+            y = (-C * k1 + A * k2) / (A * D - B * C)
+            return Vector([x, y])
+
     @staticmethod
     def first_nonzero_index(iterable):
         for k, item in enumerate(iterable):
@@ -97,3 +123,23 @@ class Line(object):
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
+
+
+l1 = Line(Vector([4.046, 2.836]), 1.21)
+l2 = Line(Vector([10.115, 7.09]), 3.025)
+print l1.is_parallel(l2)
+print l1.is_equal(l2)
+print l1.intersection(l2)
+
+l1 = Line(Vector([7.204, 3.182]), 8.68)
+l2 = Line(Vector([8.172, 4.114]), 9.883)
+print l1.is_parallel(l2)
+print l1.is_equal(l2)
+print l1.intersection(l2)
+
+l1 = Line(Vector([1.182, 5.562]), 6.744)
+l2 = Line(Vector([1.773, 8.343]), 9.525)
+print l1.is_parallel(l2)
+print l1.is_equal(l2)
+print l1.intersection(l2)
+
