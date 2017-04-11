@@ -13,7 +13,7 @@ class Plane(object):
         self.dimension = 3
 
         if not normal_vector:
-            all_zeros = ['0']*self.dimension
+            all_zeros = ['0'] * self.dimension
             normal_vector = Vector(all_zeros)
         self.normal_vector = normal_vector
 
@@ -23,17 +23,16 @@ class Plane(object):
 
         self.set_basepoint()
 
-
     def set_basepoint(self):
         try:
             n = self.normal_vector
             c = self.constant_term
-            basepoint_coords = ['0']*self.dimension
+            basepoint_coords = ['0'] * self.dimension
 
             initial_index = Plane.first_nonzero_index(n)
             initial_coefficient = n[initial_index]
 
-            basepoint_coords[initial_index] = c/initial_coefficient
+            basepoint_coords[initial_index] = c / initial_coefficient
             self.basepoint = Vector(basepoint_coords)
 
         except Exception as e:
@@ -42,6 +41,26 @@ class Plane(object):
             else:
                 raise e
 
+    def is_parallel(self, p):
+        return self.normal_vector.is_parallel(p.normal_vector)
+
+    def __eq__(self, p):
+        if self.normal_vector.is_zero():
+            if not p.normal_vector.is_zero():
+                return False
+            else:
+                diff = self.constant_term - p.constant_term
+                return MyDecimal(diff).is_near_zero()
+        elif p.normal_vector.is_zero():
+            return False
+
+        if not self.is_parallel(p):
+            return False
+        else:
+            p1 = self.basepoint
+            p2 = p.basepoint
+            connecting_vector = p2.minus(p1)
+            return connecting_vector.is_orthogonal(self.normal_vector)
 
     def __str__(self):
 
@@ -88,7 +107,6 @@ class Plane(object):
 
         return output
 
-
     @staticmethod
     def first_nonzero_index(iterable):
         for k, item in enumerate(iterable):
@@ -100,3 +118,22 @@ class Plane(object):
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
+
+
+p1 = Plane(Vector([-.412, 3.806, 0.728]), -3.46)
+p2 = Plane(Vector([1.03, -9.515, -1.82]), 8.65)
+print p1.is_parallel(p2)
+print p1 == p2
+
+p1 = Plane(Vector([2.611, 5.528, 0.283]), 4.6)
+p2 = Plane(Vector([7.715, 8.306, 5.342]), 3.76)
+print p1.is_parallel(p2)
+print p1 == p2
+
+p1 = Plane(Vector([-7.926, 8.625, -7.212]), -7.952)
+p2 = Plane(Vector([-2.642, 2.875, -2.404]), -2.443)
+print p1.is_parallel(p2)
+print p1.normal_vector
+print p2.normal_vector
+print p1.normal_vector.is_parallel(p2.normal_vector)
+print p1 == p2
